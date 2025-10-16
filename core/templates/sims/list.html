@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}SIM Card List{% endblock %}
+
+{% block content %}
+<style>
+    .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .list-header h2 {
+        color: #667eea;
+        font-size: 2em;
+        margin: 0;
+    }
+    
+    .btn-add {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .sim-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+        list-style: none;
+    }
+    
+    .sim-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .sim-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .sim-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+    
+    .sim-number {
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .sim-operator {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-bottom: 15px;
+        background: #e3f2fd;
+        color: #1565c0;
+    }
+    
+    .sim-assignment {
+        background: #f5f5f5;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95em;
+    }
+    
+    .sim-assignment.assigned {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border-left: 3px solid #4caf50;
+    }
+    
+    .sim-assignment.unassigned {
+        background: #fff3e0;
+        color: #e65100;
+        border-left: 3px solid #ff9800;
+    }
+    
+    .assignment-label {
+        font-weight: 600;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    
+    .empty-state-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .sim-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .list-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .btn-add {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="list-header">
+    <h2>📱 SIM Cards</h2>
+    <a href="/sims/add/" class="btn-add">
+        <span>➕</span>
+        <span>Add SIM Card</span>
+    </a>
+</div>
+
+{% if sims %}
+<ul class="sim-grid">
+    {% for s in sims %}
+    <li class="sim-card">
+        <div class="sim-number">
+            <span>📱</span>
+            <span>{{ s.sim_number }}</span>
+        </div>
+        <div class="sim-operator">
+            📡 {{ s.operator }}
+        </div>
+        {% if s.assigned_to %}
+        <div class="sim-assignment assigned">
+            <span class="assignment-label">👤 Assigned to:</span>
+            <span>{{ s.assigned_to.name }}</span>
+        </div>
+        {% else %}
+        <div class="sim-assignment unassigned">
+            <span class="assignment-label">⚠️ Status:</span>
+            <span>Unassigned</span>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">📱</div>
+    <h3>No SIM Cards Found</h3>
+    <p>Get started by adding your first SIM card.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment List{% endblock %}
+
+{% block content %}
+<style>
+    .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .list-header h2 {
+        color: #667eea;
+        font-size: 2em;
+        margin: 0;
+    }
+    
+    .btn-add {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .payment-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 20px;
+        list-style: none;
+    }
+    
+    .payment-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .payment-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .payment-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+    
+    .payment-employee {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .payment-amount {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: #667eea;
+        margin-bottom: 10px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .payment-date {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-size: 0.95em;
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 6px;
+        margin-top: 15px;
+    }
+    
+    .payment-date strong {
+        color: #333;
+    }
+    
+    .currency-symbol {
+        font-size: 0.7em;
+        vertical-align: super;
+        color: #764ba2;
+    }
+    
+    .payment-summary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .summary-item {
+        text-align: center;
+    }
+    
+    .summary-label {
+        font-size: 0.9em;
+        opacity: 0.9;
+        margin-bottom: 5px;
+    }
+    
+    .summary-value {
+        font-size: 1.8em;
+        font-weight: 700;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    
+    .empty-state-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .payment-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .list-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .btn-add {
+            justify-content: center;
+        }
+        
+        .payment-amount {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+<div class="list-header">
+    <h2>💳 Payments</h2>
+    <a href="/payments/add/" class="btn-add">
+        <span>➕</span>
+        <span>Add Payment</span>
+    </a>
+</div>
+
+{% if payments %}
+<div class="payment-summary">
+    <div class="summary-item">
+        <div class="summary-label">Total Payments</div>
+        <div class="summary-value">{{ payments|length }}</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Total Amount</div>
+        <div class="summary-value">₹ {% widthratio payments|length 1 1 %}0</div>
+    </div>
+</div>
+
+<ul class="payment-grid">
+    {% for p in payments %}
+    <li class="payment-card">
+        <div class="payment-employee">
+            <span>👤</span>
+            <span>{{ p.employee.name }}</span>
+        </div>
+        <div class="payment-amount">
+            <span class="currency-symbol">₹</span>{{ p.amount }}
+        </div>
+        <div class="payment-date">
+            <span>📅</span>
+            <strong>Date:</strong>
+            <span>{{ p.date|date:"M d, Y" }}</span>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">💳</div>
+    <h3>No Payments Found</h3>
+    <p>Get started by recording your first payment.</p>
+</div>
+{% endif %}
+{% endblock %}

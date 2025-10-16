@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Employee SIM Management{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 0;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0;
+        }
+        
+        nav a {
+            display: block;
+            padding: 20px 40px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #764ba2;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        nav a:hover::after {
+            width: 80%;
+        }
+        
+        .content {
+            padding: 40px;
+            min-height: 400px;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+        
+        .icon {
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav a {
+                padding: 15px 20px;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 Employee SIM Management</h1>
+            <p>Manage employees, SIM cards, and payments</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}"><span class="icon">📊</span>Dashboard </a></li>
+                <li><a href="{% url 'employee_list' %}"><span class="icon">👥</span>Employees</a></li>
+                <li><a href="{% url 'sim_list' %}"><span class="icon">📱</span>SIM Cards</a></li>
+                <li><a href="{% url 'payment_list' %}"><span class="icon">💳</span>Payments</a></li>
+            </ul>
+        </nav>
+        
+        <div class="content">
+            {% block content %}
+            <div style="text-align: center; padding: 60px 20px;">
+                <h2 style="color: #667eea; margin-bottom: 20px;">Welcome to the SIM Management System</h2>
+                <p style="color: #666; font-size: 1.1em;">Select an option from the menu above to get started.</p>
+            </div>
+            {% endblock %}
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Employee SIM Management System. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

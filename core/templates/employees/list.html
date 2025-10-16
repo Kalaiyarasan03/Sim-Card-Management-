@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Employee List{% endblock %}
+
+{% block content %}
+<style>
+    .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .list-header h2 {
+        color: #667eea;
+        font-size: 2em;
+        margin: 0;
+    }
+    
+    .btn-add {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .employee-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        list-style: none;
+    }
+    
+    .employee-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .employee-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .employee-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+    
+    .employee-name {
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .employee-status {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    
+    .status-active {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .employee-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn-edit {
+        flex: 1;
+        background: #667eea;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+    
+    .btn-edit:hover {
+        background: #764ba2;
+        transform: scale(1.05);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    
+    .empty-state-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .employee-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .list-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .btn-add {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="list-header">
+    <h2>👥 Employees</h2>
+    <a href="/employees/add/" class="btn-add">
+        <span>➕</span>
+        <span>Add Employee</span>
+    </a>
+</div>
+
+{% if employees %}
+<ul class="employee-grid">
+    {% for e in employees %}
+    <li class="employee-card">
+        <div class="employee-name">
+            <span>👤</span>
+            <span>{{ e.name }}</span>
+        </div>
+        <div class="employee-status status-{{ e.status|lower }}">
+            {{ e.status }}
+        </div>
+        <div class="employee-actions">
+            <a href="/employees/{{ e.id }}/edit/" class="btn-edit">
+                <span>✏️</span>
+                <span>Edit</span>
+            </a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">📋</div>
+    <h3>No Employees Found</h3>
+    <p>Get started by adding your first employee.</p>
+</div>
+{% endif %}
+{% endblock %}
